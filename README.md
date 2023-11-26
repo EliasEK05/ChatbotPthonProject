@@ -13,4 +13,4 @@ Pour exécuter celle qui vous intéresse, vous n'aurez qu'à entrer le chiffre c
 Penser à installer le module math, os et time.
 
       liste des bugs connus:
-uncoding (UTF-8), out of range de liste et de matrices, on a également eu des soucis dans les fonctionnalités 2 et 3.
+uncoding (UTF-8), out of range de liste et de matrices, le temps d'exécution de la matrice TF-IDF prend du de temps, on a également eu des soucis dans les fonctionnalités 2 et 3.
