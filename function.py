@@ -179,13 +179,13 @@ def IDF(directory):
 
 #Écrire une fonction qui prend en paramètre le répertoire où se trouvent les fichiers à analyser et qui
 #retourne au minimum la matrice TF-IDF.
-def matrice_TF_IDF(directory):
-
+'''def matrice_TF_IDF(directory):
     liste_dico_tf = []
     liste_mot_idf = []
     score_IDF = IDF(directory)
     for i in score_IDF.keys():
         liste_mot_idf.append(i)
+    liste_mot_idf.append(" ")
     
     for fichier in os.listdir(directory):
         with open("cleaned//" + fichier, 'r', encoding='utf-8') as F:
@@ -193,6 +193,7 @@ def matrice_TF_IDF(directory):
             dico_tf_par_texte = TF(texte)
             dico_tf_par_texte['nom'] = fichier                               
             liste_dico_tf.append(dico_tf_par_texte)
+        liste_dico_tf.append(" ")
 
     nblig = len(score_IDF)+1
     nbcol = len(liste_dico_tf)+1
@@ -201,31 +202,67 @@ def matrice_TF_IDF(directory):
     for i in range(nblig+1):
         ligne = []
         for j in range(nbcol+1):
-            ligne.append(0)
+            ligne.append(" ")
         matrice.append(ligne)
 
+    for j in range(1,len(matrice)):
+        matrice[0][j] = liste_dico_tf[j-1]["nom"]
 
-    for lig in range(nblig+1):
-        for col in range(nbcol+1):
-            if not(lig==0 and col==0):
-                if lig==0 and col!=0:
-                    matrice[lig][col]=liste_dico_tf[col-1]['nom']                   
-                elif lig!=0 and col==0:
-                    matrice[lig][col]=liste_mot_idf[lig-1]                                     
-                else:
-                    for i in liste_dico_tf[j].keys():
-                        if matrice[lig][0] in i:
-                            matrice[lig][col] = liste_dico_tf[j][matrice[lig][0]] * score_IDF[matrice[lig][0]]
-
+    for i in range(1,len(matrice[0])):
+        matrice[i][0] = liste_mot_idf[i-1]
     return matrice
-    
+'''
 
 
+def tfidf(directory="./cleaned"):
+    liste_des_mots = IDF(directory)
+    matrice_tf_idf = []
+    id = 0
+    for mot in liste_des_mots:
+        matrice_tf_idf.append([])
+        for file in list_of_files(directory, ".txt"):
+            with open(directory + "/" + file, "r") as f:
+                dico_mot_fichier = TF(f.read())
+            if mot in dico_mot_fichier:
+                matrice_tf_idf[id].append(dico_mot_fichier[mot] * liste_des_mots[mot])
+            else:
+                matrice_tf_idf[id].append(0.0)
+        id += 1
+    return matrice_tf_idf
 
 
 
 
 #Fonctionnalités à développer
+
+#Fonctionnalité 1 : Afficher la liste des mots les moins importants dans le corpus de documents. Un mot est dit non important, si son TD-IDF = 0 dans tous les fichiers.
+
+def fonctionnalite_1():
+    matrice_TF_IDF = tfidf("cleaned")
+    liste_mot_pas_important = []
+    i = 0
+    liste_mot = list(IDF("cleaned").keys())
+    for ligne in matrice_TF_IDF:
+        verif = True
+        for colonne in ligne:
+            if colonne != 0:
+                verif = False
+        if verif == True:
+            liste_mot_pas_important.append(liste_mot[i])
+        i += 1
+    return liste_mot_pas_important
+
+    return liste_mot_pas_important
+
+
+#Fonctionnalité 2 : Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
+'''
+def fonctionnalite_2():
+ 
+    return liste_mot_important
+'''
+
+
 
 #fonctionnalité 3: Indiquer le(s) mot(s) le(s) plus répété(s) par le président Chirac
 
@@ -267,7 +304,7 @@ def fonctionnalite_4():
             indice_president = indice
         indice += 1
 
-    return president_nation, liste_repetition_nation, president_nation[indice_president], repetition_max
+    return president_nation, president_nation[indice_president], repetition_max
 
 
 #fonctionnalité 5: Indiquer le premier président à parler du climat et/ou de l’écologie
@@ -287,4 +324,35 @@ def fonctionnalite_5():
                 verif = True
         i += 1
     return president_climat
+
+#fonctionalité 6 : Hormis les mots dits « non importants », quel(s) est(sont) le(s) mot(s) que tous les présidents ont évoqués.
+'''
+def fonctionnalité_6():
+    liste_texte = liste_texte_president()
+    liste_mots = []
+    mots_retire = []
+    i = 0
+    dico_mot ={}
+    for txt in liste_texte:
+        TF_txt = TF(txt)
+        for mot in TF_txt:
+            if i == 0:
+                dico_mot[mot] = 1
+            else:
+                if mot in dico_mot:
+                    dico_mot[mot] += 1
+        i += 1
+    for mot in dico_mot:
+        if dico_mot[mot] == 6:
+            liste_mots.append(mot)
+    matrice_TF_IDF = matrice_TF_IDF()
+    i = 0
+    for mot in liste_mots:
+        for ligne in matrice_TF_IDF:
+            for colonne in matrice_TF_IDF[ligne]:
+
+    return liste_mots
+
+'''
+
 
