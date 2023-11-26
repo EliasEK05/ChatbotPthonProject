@@ -1,12 +1,16 @@
 # ChatbotPthonProject
+
+      noms des membre de l’équipe projet:
 El Khilali Elias
 Tran Tony
 Group E
 
-Lorsque vous serez sur le menu, vous aurez la possibilité d'accéder d'accéder à 6 fonctions prédéfinies.
-Pour l'exécuter vous n'aurez qu'à entrer le chiffre qui vous intéresse.
+      notice d'utilisation:
+Lorsque vous vous rendez sur le menu, vous verrez apparaître un chiffre suivi d'une fonctitonnalité. Vous aurez alors la possibilité d'accéder à 6 fonctions prédéfinies concernant les discours de présidents français.
+Pour exécuter celle qui vous intéresse, vous n'aurez qu'à entrer le chiffre correspondant à la fonction.
 
-Penser à installer le module math et os.
+      éventuels dépendances à installer:
+Penser à installer le module math, os et time.
 
-
-Liste des bugs connus : uncoding (UTF-8), out of range de liste et de matrices, on a également eu des soucis dans les fonctionnalités 2 et 3.
+      liste des bugs connus:
+uncoding (UTF-8), out of range de liste et de matrices, on a également eu des soucis dans les fonctionnalités 2 et 3.
