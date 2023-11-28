@@ -1,9 +1,11 @@
 # ChatbotPthonProject
 
       noms des membre de l’équipe projet:
+      
 El Khilali Elias
 Tran Tony
 Group E
+https://github.com/EliasEK05/ChatbotPthonProject/tree/master
 
       notice d'utilisation:
 Lorsque vous vous rendez sur le menu, vous verrez apparaître un chiffre suivi d'une fonctitonnalité. Vous aurez alors la possibilité d'accéder à 6 fonctions prédéfinies concernant les discours de présidents français.
