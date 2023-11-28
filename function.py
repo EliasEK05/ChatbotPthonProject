@@ -165,7 +165,6 @@ def IDF(directory):
                     if mot not in liste_mot:
                         liste_mot.append(mot)
         liste_mots_par_fichier.append(liste_mot)
-        F.close()
     for liste in liste_mots_par_fichier:
         for mot in liste:
             if mot in dico_score_idf:
@@ -243,24 +242,44 @@ def fonctionnalite_1():
     i = 0
     liste_mot = list(IDF("cleaned").keys())
     for ligne in matrice_TF_IDF:
-        verif = True
+        somme = 0
         for colonne in ligne:
-            if colonne != 0:
-                verif = False
-        if verif == True:
+            somme += colonne
+        if somme == 0:
             liste_mot_pas_important.append(liste_mot[i])
         i += 1
     return liste_mot_pas_important
 
-    return liste_mot_pas_important
+
 
 
 #Fonctionnalité 2 : Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
-'''
+
 def fonctionnalite_2():
- 
+    liste_mot_important = []
+    matrice_tfidf = tfidf("cleaned")
+    somme_max = 0
+    nb_valeur_ligne = len(matrice_tfidf[0])
+    liste_mot = list(IDF("cleaned").keys())
+
+    for ligne in matrice_tfidf:
+        somme = 0
+        for colonne in ligne:
+            somme += colonne
+        if somme > somme_max:
+            somme_max = somme
+
+    cpt = 0
+    for ligne in matrice_tfidf:
+        somme = 0
+        for colonne in ligne:
+            somme += colonne
+        if somme_max == somme:
+            liste_mot_important.append(liste_mot[cpt])
+        cpt += 1
+
     return liste_mot_important
-'''
+
 
 
 
@@ -326,8 +345,7 @@ def fonctionnalite_5():
     return president_climat
 
 #fonctionalité 6 : Hormis les mots dits « non importants », quel(s) est(sont) le(s) mot(s) que tous les présidents ont évoqués.
-'''
-def fonctionnalité_6():
+def fonctionnalite_6():
     liste_texte = liste_texte_president()
     liste_mots = []
     mots_retire = []
@@ -345,14 +363,12 @@ def fonctionnalité_6():
     for mot in dico_mot:
         if dico_mot[mot] == 6:
             liste_mots.append(mot)
-    matrice_TF_IDF = matrice_TF_IDF()
-    i = 0
+    liste_mots_pas_important = fonctionnalite_1()
     for mot in liste_mots:
-        for ligne in matrice_TF_IDF:
-            for colonne in matrice_TF_IDF[ligne]:
-
+        if mot in liste_mots_pas_important:
+            liste_mots.remove(mot)
     return liste_mots
 
-'''
+
 
 
