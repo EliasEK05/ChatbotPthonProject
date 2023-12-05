@@ -384,4 +384,26 @@ def mot_corpus_question(list_mot_question):
     return intersection
 
 
+# 3. Calcul du vecteur TF-IDF pour les termes de la question :
+def fonction_3(question):
+    chaine = ""
+    for car in question:                                        #enlever les caractères spéciaux
+        if car in ['.', ',', '"', '!', '?', ';', ':']:
+            car = ''
+        elif car in ["-", "'"]:
+            car = ' '
+        chaine += car
+    liste_mot = chaine.split()         #liste mot
 
+    dico_tf = {}
+    for i in liste_mot:
+        if i in dico_tf:
+            dico_tf[i] += 1
+        else:
+            dico_tf[i] = 1
+    for mot in dico_tf:
+        dico_tf[mot] /= len(liste_mot)
+
+
+
+    return dico_tf
