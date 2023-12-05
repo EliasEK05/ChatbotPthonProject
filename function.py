@@ -1,7 +1,9 @@
 import os
 from random import *
 from math import *
-#fonction permetant de faire une liste des nom nom des fichier dans le dossier speeches ( fonction donné dans l'éononcé du projet
+
+
+# fonction permetant de faire une liste des nom nom des fichier dans le dossier speeches ( fonction donné dans l'éononcé du projet
 def list_of_files(directory, extension):
     files_names = []
     for filename in os.listdir(directory):
@@ -10,8 +12,7 @@ def list_of_files(directory, extension):
     return files_names
 
 
-
-#Fonction pour extraire les noms des présidents à partir des noms des fichiers texte fournis
+# Fonction pour extraire les noms des présidents à partir des noms des fichiers texte fournis
 def extraction_nom():
     list_nom_fichier = list_of_files("speeches", "txt")
     list_nom_president = []
@@ -23,8 +24,7 @@ def extraction_nom():
     return list_nom_president
 
 
-
-#Associer à chaque président un prénom (add dans le dico info president)
+# Associer à chaque président un prénom (add dans le dico info president)
 def prenom_president():
     list_nom_president = extraction_nom()
     dico_noms = {}
@@ -40,7 +40,6 @@ def prenom_president():
     return dico_noms
 
 
-
 # Afficher la liste des noms des présidents (attention aux doublons)
 def list_president():
     list_nom_president = extraction_nom()
@@ -51,39 +50,31 @@ def list_president():
     return list_nom_president_clean
 
 
-
-
-
-
 '''Convertir  les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. Les
 nouveaux fichiers doivent être stockés dans un nouveau dossier appelé « cleaned ». Ce dossier doit se
 situer dans le répertoire principal où se trouve le programme main.py et au même niveau que le répertoire
 « speeches »'''
 
+
 def nettoyage_fichier():
     list_nom_fichier_speeches = list_of_files("speeches", "txt")
-    chemin_dossier_cleaned = r"C:\Users\elias\PycharmProjects\pythonProject\cleaned"      #le r permet à ce que la chaine de caractère soit interpreter correctement et qu'il n'y ai pas d'erreur d'interprétation
+    chemin_dossier_cleaned = r"C:\Users\elias\PycharmProjects\pythonProject\cleaned"  # le r permet à ce que la chaine de caractère soit interpreter correctement et qu'il n'y ai pas d'erreur d'interprétation
     chemin_dossier_speeches = r"C:\Users\elias\PycharmProjects\pythonProject\speeches"
     for i in list_nom_fichier_speeches:
         nom_fichier_clean = i[:-4] + "_clean" + ".txt"
         chemin_fichier = os.path.join(chemin_dossier_cleaned, nom_fichier_clean)
         nom_fichier_discours = os.path.join(chemin_dossier_speeches, i)
-        with open(nom_fichier_discours, "r", encoding='utf-8') as a, open(chemin_fichier, "w",encoding='utf-8') as b:
+        with open(nom_fichier_discours, "r", encoding='utf-8') as a, open(chemin_fichier, "w", encoding='utf-8') as b:
             texte = a.read()
             for car in texte:
                 b.write(minuscule(car))
 
 
-#Fonction permettant de mettre une lettre en minuscule, utilisé pour la fonction nettoyage_fichier
+# Fonction permettant de mettre une lettre en minuscule, utilisé pour la fonction nettoyage_fichier
 def minuscule(lettre):
     if ord(lettre) >= 65 and ord(lettre) <= 90:
         lettre = chr(ord(lettre) + 32)
     return lettre
-
-
-
-
-
 
 
 '''Pour chaque fichier stocké dans le répertoire « cleaned », parcourir son texte et supprimer tout caractère
@@ -111,17 +102,19 @@ def suppresion_ponctuation():
                     car = ' '
                 F2.write(car)
 
-#fonction permettant de return la liste des texte des fichiers cleaned
+
+# fonction permettant de return la liste des texte des fichiers cleaned
 def liste_texte():
     liste = list_of_files("cleaned", "txt")
     liste_texte = []
     for fichier in liste:
-        with open("cleaned//" + fichier, 'r', encoding = 'utf-8') as F:
+        with open("cleaned//" + fichier, 'r', encoding='utf-8') as F:
             texte = F.read()
             liste_texte.append(texte)
     return liste_texte
 
-#foncion permettant de return la liste des fichiers cleaned en combinant les deux discours de Chirac et les deux discours de Miterrand
+
+# foncion permettant de return la liste des fichiers cleaned en combinant les deux discours de Chirac et les deux discours de Miterrand
 def liste_texte_president():
     liste = liste_texte()
     txt_chirac = liste[0] + liste[1]
@@ -134,22 +127,21 @@ def liste_texte_president():
 
 
 # Écrire une fonction qui prend en paramètre une chaine de caractères et qui retourne un dictionnaire
-#associant à chaque mot le nombre de fois qu’il apparait dans la chaine de caractères.
+# associant à chaque mot le nombre de fois qu’il apparait dans la chaine de caractères.
 
 def TF(chaine):
     dico = {}
     mots = chaine.split()
     for mot in mots:
         if mot in dico:
-            dico[mot] +=1
+            dico[mot] += 1
         else:
             dico[mot] = 1
     return dico
 
 
-
-#Écrire une fonction qui prend en paramètre le répertoire où se trouve l’ensemble des fichiers du corpus
-#et qui retourne un dictionnaire associant à chaque mot son score IDF.
+# Écrire une fonction qui prend en paramètre le répertoire où se trouve l’ensemble des fichiers du corpus
+# et qui retourne un dictionnaire associant à chaque mot son score IDF.
 
 def IDF(directory):
     liste_mots_par_fichier = []
@@ -172,12 +164,12 @@ def IDF(directory):
             else:
                 dico_score_idf[mot] = 1
     for mot in dico_score_idf:
-            dico_score_idf[mot] = log(nb_documents_total / dico_score_idf[mot])
+        dico_score_idf[mot] = log(nb_documents_total / dico_score_idf[mot])
     return dico_score_idf
 
 
-#Écrire une fonction qui prend en paramètre le répertoire où se trouvent les fichiers à analyser et qui
-#retourne au minimum la matrice TF-IDF.
+# Écrire une fonction qui prend en paramètre le répertoire où se trouvent les fichiers à analyser et qui
+# retourne au minimum la matrice TF-IDF.
 '''def matrice_TF_IDF(directory):
     liste_dico_tf = []
     liste_mot_idf = []
@@ -185,7 +177,7 @@ def IDF(directory):
     for i in score_IDF.keys():
         liste_mot_idf.append(i)
     liste_mot_idf.append(" ")
-    
+
     for fichier in os.listdir(directory):
         with open("cleaned//" + fichier, 'r', encoding='utf-8') as F:
             texte = F.read()
@@ -230,11 +222,9 @@ def tfidf(directory="./cleaned"):
     return matrice_tf_idf
 
 
+# Fonctionnalités à développer
 
-
-#Fonctionnalités à développer
-
-#Fonctionnalité 1 : Afficher la liste des mots les moins importants dans le corpus de documents. Un mot est dit non important, si son TD-IDF = 0 dans tous les fichiers.
+# Fonctionnalité 1 : Afficher la liste des mots les moins importants dans le corpus de documents. Un mot est dit non important, si son TD-IDF = 0 dans tous les fichiers.
 
 def fonctionnalite_1():
     matrice_TF_IDF = tfidf("cleaned")
@@ -251,9 +241,7 @@ def fonctionnalite_1():
     return liste_mot_pas_important
 
 
-
-
-#Fonctionnalité 2 : Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
+# Fonctionnalité 2 : Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
 
 def fonctionnalite_2():
     liste_mot_important = []
@@ -281,9 +269,7 @@ def fonctionnalite_2():
     return liste_mot_important
 
 
-
-
-#fonctionnalité 3: Indiquer le(s) mot(s) le(s) plus répété(s) par le président Chirac
+# fonctionnalité 3: Indiquer le(s) mot(s) le(s) plus répété(s) par le président Chirac
 
 def fonctionnalite_3():
     liste_texte = liste_texte_president()
@@ -299,10 +285,10 @@ def fonctionnalite_3():
             mot_plus_repetes.append(mot)
     return mot_plus_repetes, max
 
-#fonctionnalité 4: Indiquer le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
+
+# fonctionnalité 4: Indiquer le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
 
 def fonctionnalite_4():
-
     liste_texte = liste_texte_president()
     liste_repetition_nation = []
     president_nation = []
@@ -326,7 +312,7 @@ def fonctionnalite_4():
     return president_nation, president_nation[indice_president], repetition_max
 
 
-#fonctionnalité 5: Indiquer le premier président à parler du climat et/ou de l’écologie
+# fonctionnalité 5: Indiquer le premier président à parler du climat et/ou de l’écologie
 
 def fonctionnalite_5():
     liste_texte = liste_texte_president()
@@ -344,13 +330,13 @@ def fonctionnalite_5():
         i += 1
     return president_climat
 
-#fonctionalité 6 : Hormis les mots dits « non importants », quel(s) est(sont) le(s) mot(s) que tous les présidents ont évoqués.
+
+# fonctionalité 6 : Hormis les mots dits « non importants », quel(s) est(sont) le(s) mot(s) que tous les présidents ont évoqués.
 def fonctionnalite_6():
     liste_texte = liste_texte_president()
     liste_mots = []
-    mots_retire = []
     i = 0
-    dico_mot ={}
+    dico_mot = {}
     for txt in liste_texte:
         TF_txt = TF(txt)
         for mot in TF_txt:
@@ -369,6 +355,33 @@ def fonctionnalite_6():
             liste_mots.remove(mot)
     return liste_mots
 
+
+# ---------------------Partie 2-----------------------------
+
+#1. Tokenisation de la Question :
+
+def question(txt_question):
+    txt_clean = ""
+    for car in txt_question:
+        if car in ['.', ',', '"', '!', '?', ';', ':']:
+            car = ''
+        elif car in ["-", "'"]:
+            car = ' '
+        else:
+            car = minuscule(car)
+        txt_clean += car
+    return txt_clean.split()
+
+# 2. Recherche des mots de la question dans le Corpus :
+
+
+def mot_corpus_question(list_mot_question):
+    liste_mot_corpus = list(IDF("cleaned").keys())
+    intersection = []
+    for mot in list_mot_question:
+        if mot in liste_mot_corpus:
+            intersection.append(mot)
+    return intersection
 
 
 
