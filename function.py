@@ -167,57 +167,52 @@ def IDF(directory):
         dico_score_idf[mot] = log(nb_documents_total / dico_score_idf[mot])
     return dico_score_idf
 
+def IDF_10(directory):
+    liste_mots_par_fichier = []
+    dico_score_idf = {}
+    nb_documents_total = 0
+    for fichier in os.listdir(directory):
+        nb_documents_total += 1
+        liste_mot = []
+        with open("cleaned//" + fichier, 'r', encoding='utf-8') as F:
+            for ligne in F:
+                mots = ligne.split()
+                for mot in mots:
+                    if mot not in liste_mot:
+                        liste_mot.append(mot)
+        liste_mots_par_fichier.append(liste_mot)
+    for liste in liste_mots_par_fichier:
+        for mot in liste:
+            if mot in dico_score_idf:
+                dico_score_idf[mot] += 1
+            else:
+                dico_score_idf[mot] = 1
+    for mot in dico_score_idf:
+        dico_score_idf[mot] = log((nb_documents_total / dico_score_idf[mot]), 10)
+    return dico_score_idf
+
 
 # Écrire une fonction qui prend en paramètre le répertoire où se trouvent les fichiers à analyser et qui
 # retourne au minimum la matrice TF-IDF.
-'''def matrice_TF_IDF(directory):
-    liste_dico_tf = []
-    liste_mot_idf = []
-    score_IDF = IDF(directory)
-    for i in score_IDF.keys():
-        liste_mot_idf.append(i)
-    liste_mot_idf.append(" ")
 
-    for fichier in os.listdir(directory):
-        with open("cleaned//" + fichier, 'r', encoding='utf-8') as F:
-            texte = F.read()
-            dico_tf_par_texte = TF(texte)
-            dico_tf_par_texte['nom'] = fichier                               
-            liste_dico_tf.append(dico_tf_par_texte)
-        liste_dico_tf.append(" ")
-
-    nblig = len(score_IDF)+1
-    nbcol = len(liste_dico_tf)+1
-    matrice = []
-
-    for i in range(nblig+1):
-        ligne = []
-        for j in range(nbcol+1):
-            ligne.append(" ")
-        matrice.append(ligne)
-
-    for j in range(1,len(matrice)):
-        matrice[0][j] = liste_dico_tf[j-1]["nom"]
-
-    for i in range(1,len(matrice[0])):
-        matrice[i][0] = liste_mot_idf[i-1]
-    return matrice
-'''
-
-
-def tfidf(directory="./cleaned"):
-    liste_des_mots = IDF(directory)
+def tfidf(directory="cleaned"):
+    liste_des_mots = IDF_10(directory)
     matrice_tf_idf = []
     id = 0
+    liste_txt = liste_texte()
+    liste_tf = []
+    for txt in liste_txt:
+        liste_tf.append(TF(txt))
+
     for mot in liste_des_mots:
-        matrice_tf_idf.append([])
-        for file in list_of_files(directory, ".txt"):
-            with open(directory + "/" + file, "r") as f:
-                dico_mot_fichier = TF(f.read())
-            if mot in dico_mot_fichier:
-                matrice_tf_idf[id].append(dico_mot_fichier[mot] * liste_des_mots[mot])
+        L = []
+        for tf in liste_tf:
+            if mot in tf.keys():
+                #matrice_tf_idf[id].append(round((dico_mot_fichier[mot] * liste_des_mots[mot]), 2))
+                L.append((tf[mot] * liste_des_mots[mot]))
             else:
-                matrice_tf_idf[id].append(0.0)
+                L.append(0.0)
+        matrice_tf_idf.append(L)
         id += 1
     return matrice_tf_idf
 
@@ -403,7 +398,21 @@ def fonction_3(question):
             dico_tf[i] = 1
     for mot in dico_tf:
         dico_tf[mot] /= len(liste_mot)
+    dico_idf = IDF("cleaned")
+    '''
+    dico_tf_idf = {}
+    for mot in dico_tf:
+        for mot in dico_idf:
+            for mot_phrase in dico_tf:
+                if mot == mot_phrase:
+                    dico_tf_idf[mot] = dico_tf[mot] * dico_idf[mot]
+                    '''
+    vecteur_question = []
 
-
+    for mot in dico_idf:
+        if mot in dico_tf:
+            vecteur_question.append(dico_idf[mot] * dico_tf[mot])
+        else:
+            vecteur_question.append(0.0)
 
     return dico_tf
