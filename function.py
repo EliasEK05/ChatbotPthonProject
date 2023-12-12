@@ -399,16 +399,8 @@ def fonction_3(question):
     for mot in dico_tf:
         dico_tf[mot] /= len(liste_mot)
     dico_idf = IDF("cleaned")
-    '''
-    dico_tf_idf = {}
-    for mot in dico_tf:
-        for mot in dico_idf:
-            for mot_phrase in dico_tf:
-                if mot == mot_phrase:
-                    dico_tf_idf[mot] = dico_tf[mot] * dico_idf[mot]
-                    '''
-    vecteur_question = []
 
+    vecteur_question = []
     for mot in dico_idf:
         if mot in dico_tf:
             vecteur_question.append(dico_idf[mot] * dico_tf[mot])
