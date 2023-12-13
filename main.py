@@ -13,7 +13,7 @@ while True:
     print("5. Conulster le premier président à parler du climat et/ou de l’écologie")
     print('6. Consulter le(s) mot(s) que tous les présidents ont évoqués en dehors des mots "non importants" ')
     time.sleep(1)
-    user = int(input("Afin d'accéder a la focntionnalité souhaitée, veuillez tapper dans la console le numéro de la fonctionnalité "))
+    user = int(input("Afin d'accéder a la focntionnalité souhaitée, veuillez taper dans la console le numéro de la fonctionnalité "))
     if user == 1:
         print("Les mots pas important sont : ", end = "")
         time.sleep(2)
