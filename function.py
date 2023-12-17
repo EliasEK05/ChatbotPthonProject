@@ -2,8 +2,9 @@ import os
 from random import *
 from math import *
 
+# ---------------------Partie 1-----------------------------
 
-# fonction permetant de faire une liste des nom nom des fichier dans le dossier speeches ( fonction donné dans l'éononcé du projet
+# fonction permettant de faire une liste des noms des fichier dans le dossier speeches ( fonction donné dans l'éononcé du projet )
 def list_of_files(directory, extension):
     files_names = []
     for filename in os.listdir(directory):
