@@ -1,3 +1,5 @@
+#    ChatbotPythonProject - Elias EL Khilali, Tony Tran - rôle : Affichage du menu dans la console
+
 from function import *
 import time
 
