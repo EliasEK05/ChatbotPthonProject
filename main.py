@@ -1,9 +1,7 @@
-#    ChatbotPythonProject - Elias EL Khilali, Tony Tran - rôle : Affichage du menu dans la console
-
 from function import *
 import time
 
-print("Bienvenue dans menu du chatbot.\nDans ce menu, vous pouvez poser une question ou accéder aux différentes focntionnalités.")
+print("Bienvenue dans menu du chatbot.\nDans ce menu, vous pouvez poser une question ou accéder aux différentes fonctionnalités.")
 time.sleep(2)
 while True:
     fonction = int(input("Ecrivez 1 si vous voulez poser une question. Ou écrivez 2 si vous voulez accéder aux fonctionnalités."))
@@ -11,10 +9,11 @@ while True:
         question = input("Quel est votre question?")
         if mot_corpus_question(question_(question)) == []:
             print("Désolé, je n'ai pas compris votre question.")
+        elif question.split()[0] not in ["Pourquoi", "Comment", "Peux-tu"]:
+            print(reponse(score_idf(vecteur_question(question)), doc_pertinent(matrice_transposed(tfidf("cleaned")), vecteur_question(question), list_of_files("speeches", 'txt'))))
         else:
             affiner_reponse(question, reponse(score_idf(vecteur_question(question)), doc_pertinent(matrice_transposed(tfidf("cleaned")), vecteur_question(question), list_of_files("speeches", 'txt'))))
 
-        print()
     elif fonction == 2:
         print("Voici les différentes fonctionnalités disponible")
         time.sleep(1)
@@ -61,6 +60,7 @@ while True:
     else:
         print("Je n'ai pas compris. Veillez recommencer")
 
+    print()
     time.sleep(5)
 
 
