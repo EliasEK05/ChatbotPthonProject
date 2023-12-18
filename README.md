@@ -24,14 +24,4 @@ prédéfinies concernant les discours de présidents français.
 ## éventuels dépendances à installer:
 • Penser à installer le module math, os et time.
 
-## liste des problèmes/bugs fixée:
-• uncoding (UTF-8)
 
-• out of range de liste et de matrices
-
-• le temps d'exécution de la matrice TF-IDF prend du de temps
-
-• soucis dans les fonctionnalités 2 et 6.
-
-## liste des problèmes/bugs en cours de fixations:
-• soucis dans les fonctionnalités 2 et 6.
