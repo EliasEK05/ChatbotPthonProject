@@ -143,31 +143,8 @@ def TF(chaine):
 # Écrire une fonction qui prend en paramètre le répertoire où se trouve l’ensemble des fichiers du corpus
 # et qui retourne un dictionnaire associant à chaque mot son score IDF.
 
-def IDF(directory):
-    liste_mots_par_fichier = []
-    dico_score_idf = {}
-    nb_documents_total = 0
-    for fichier in os.listdir(directory):
-        nb_documents_total += 1
-        liste_mot = []
-        with open("cleaned//" + fichier, 'r', encoding='utf-8') as F:
-            for ligne in F:
-                mots = ligne.split()
-                for mot in mots:
-                    if mot not in liste_mot:
-                        liste_mot.append(mot)
-        liste_mots_par_fichier.append(liste_mot)
-    for liste in liste_mots_par_fichier:
-        for mot in liste:
-            if mot in dico_score_idf:
-                dico_score_idf[mot] += 1
-            else:
-                dico_score_idf[mot] = 1
-    for mot in dico_score_idf:
-        dico_score_idf[mot] = log(nb_documents_total / dico_score_idf[mot])
-    return dico_score_idf
 
-def IDF_10(directory):
+def IDF(directory):
     liste_mots_par_fichier = []
     dico_score_idf = {}
     nb_documents_total = 0
@@ -196,7 +173,7 @@ def IDF_10(directory):
 # retourne au minimum la matrice TF-IDF.
 
 def tfidf(directory="cleaned"):
-    liste_des_mots = IDF_10(directory)
+    liste_des_mots = IDF(directory)
     matrice_tf_idf = []
     id = 0
     liste_txt = liste_texte()
@@ -354,7 +331,7 @@ def fonctionnalite_6():
 
 #1. Tokenisation de la Question :
 
-def question(txt_question):
+def question_(txt_question):
     txt_clean = ""
     for car in txt_question:
         if car in ['.', ',', '"', '!', '?', ';', ':']:
@@ -381,13 +358,13 @@ def mot_corpus_question(list_mot_question):
 # 3. Calcul du vecteur TF-IDF pour les termes de la question :
 def vecteur_question(question):
     chaine = ""
-    for car in question:                                        #enlever les caractères spéciaux
+    for car in question:
         if car in ['.', ',', '"', '!', '?', ';', ':']:
             car = ''
         elif car in ["-", "'"]:
             car = ' '
         chaine += car
-    liste_mot = chaine.split()         #liste mot
+    liste_mot = chaine.split()
 
     dico_tf = {}
     for i in liste_mot:
@@ -408,6 +385,7 @@ def vecteur_question(question):
 
     return vecteur_question
 
+#fonction pour transposer la matrice tfidf pour inverser les mots et les doncuments (prends la matrice en parametre une matrice)
 def matrice_transposed(matrice):
     new_matrice = []
     for i in range(len(matrice[0])):
@@ -417,21 +395,25 @@ def matrice_transposed(matrice):
         new_matrice.append(L)
     return new_matrice
 
+#Fonction renvoyant le produit scalaire de deux vecteurs
 def produit_scalaire(a, b):
     produit_scalaire = 0
     for i in range(len(a)):
-        produit_scalaire += a[i] + b[i]
+        produit_scalaire += a[i] * b[i]
     return produit_scalaire
 
+#fonction renvoyant la norme d'un vecteur
 def norme_vecteur(a) :
     somme = 0
-    for val in a :
+    for val in a:
         somme += val**2
     return sqrt(somme)
 
+#Fonction renvoyant la similarité d'un de deux vecteurs
 def similarité(a, b):
     return (produit_scalaire(a, b)/(norme_vecteur(a) * norme_vecteur(b)))
 
+#Calcul du document le plus pertinent. Prends en entré la matrice tfidf, le vecteur de la question et la liste des noms des présidents
 def doc_pertinent(matrice, vecteur_question , liste_nom):
     max_sim = 0
     max_id = 0
@@ -447,6 +429,7 @@ def doc_pertinent(matrice, vecteur_question , liste_nom):
 
     return liste_nom[max_id]
 
+#Fonction renvoyant le mot ayant le score tfidf le plus élevé
 def score_idf(vecteur_question):
     val_max = 0
     cpt = 0
@@ -460,18 +443,18 @@ def score_idf(vecteur_question):
         cpt += 1
     return liste_mot[id]
 
-
+#Fonction prenant en entrée le mot ayant
 def reponse(mot, texte):
     with open("speeches/" + texte, 'r', encoding= 'utf-8') as F:
         texte = F.read()
     texte = texte.split('.')
     for phrase in texte:
         if mot in phrase:
-            return phrase + "."
+            return phrase.strip() + "." #le .strip() permet d'enlever le saut de ligne a la fin de la reponse
 
-
-
-
-    
-
-
+def affiner_reponse(question, reponse):
+    question_starter = {"Comment" : "Après analyse,", "Pourquoi" : "Car, ", "Peux-tu" : "Oui, bien-sûr! "}
+    question = question.split()
+    if question[0] in question_starter:
+        print(question_starter[question[0]], end= "")
+        print(reponse, end="")
