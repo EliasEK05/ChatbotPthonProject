@@ -2,9 +2,8 @@ import os
 from random import *
 from math import *
 
-# ---------------------Partie 1-----------------------------
 
-# fonction permettant de faire une liste des noms des fichier dans le dossier speeches ( fonction donné dans l'éononcé du projet )
+# fonction permetant de faire une liste des nom nom des fichier dans le dossier speeches ( fonction donné dans l'éononcé du projet
 def list_of_files(directory, extension):
     files_names = []
     for filename in os.listdir(directory):
@@ -243,7 +242,6 @@ def fonctionnalite_2():
     liste_mot_important = []
     matrice_tfidf = tfidf("cleaned")
     somme_max = 0
-    nb_valeur_ligne = len(matrice_tfidf[0])
     liste_mot = list(IDF("cleaned").keys())
 
     for ligne in matrice_tfidf:
@@ -381,7 +379,7 @@ def mot_corpus_question(list_mot_question):
 
 
 # 3. Calcul du vecteur TF-IDF pour les termes de la question :
-def fonction_3(question):
+def vecteur_question(question):
     chaine = ""
     for car in question:                                        #enlever les caractères spéciaux
         if car in ['.', ',', '"', '!', '?', ';', ':']:
@@ -398,7 +396,7 @@ def fonction_3(question):
         else:
             dico_tf[i] = 1
     for mot in dico_tf:
-        dico_tf[mot] /= len(liste_mot)
+        dico_tf[mot] #/= len(liste_mot)
     dico_idf = IDF("cleaned")
 
     vecteur_question = []
@@ -408,4 +406,72 @@ def fonction_3(question):
         else:
             vecteur_question.append(0.0)
 
-    return dico_tf
+    return vecteur_question
+
+def matrice_transposed(matrice):
+    new_matrice = []
+    for i in range(len(matrice[0])):
+        L = []
+        for j in range(len(matrice)):
+            L.append(matrice[j][i])
+        new_matrice.append(L)
+    return new_matrice
+
+def produit_scalaire(a, b):
+    produit_scalaire = 0
+    for i in range(len(a)):
+        produit_scalaire += a[i] + b[i]
+    return produit_scalaire
+
+def norme_vecteur(a) :
+    somme = 0
+    for val in a :
+        somme += val**2
+    return sqrt(somme)
+
+def similarité(a, b):
+    return (produit_scalaire(a, b)/(norme_vecteur(a) * norme_vecteur(b)))
+
+def doc_pertinent(matrice, vecteur_question , liste_nom):
+    max_sim = 0
+    max_id = 0
+    i = 0
+    liste_mot = list(IDF("cleaned").keys())
+
+    for vecteur in matrice:
+
+        if similarité(vecteur_question, vecteur) > max_sim :
+            max_sim = similarité(vecteur_question, vecteur)
+            max_id = i
+        i += 1
+
+    return liste_nom[max_id]
+
+def score_idf(vecteur_question):
+    val_max = 0
+    cpt = 0
+    id = 0
+    liste_mot = list(IDF("cleaned").keys())
+    idf = IDF("cleaned")
+    for val in vecteur_question:
+        if val > val_max:
+            val_max = val
+            id = cpt
+        cpt += 1
+    return liste_mot[id]
+
+
+def reponse(mot, texte):
+    with open("speeches/" + texte, 'r', encoding= 'utf-8') as F:
+        texte = F.read()
+    texte = texte.split('.')
+    for phrase in texte:
+        if mot in phrase:
+            return phrase + "."
+
+
+
+
+    
+
+
