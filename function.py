@@ -1,3 +1,5 @@
+#    ChatbotPythonProject - Elias EL Khilali, Tony Tran - rôle : Toutes les fonctions sont écrites ici
+
 import os
 from random import *
 from math import *
