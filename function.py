@@ -454,6 +454,7 @@ def reponse(mot, texte):
         if mot in phrase:
             return phrase.strip() + "." #le .strip() permet d'enlever le saut de ligne a la fin de la reponse
 
+#Fonction peretant d'affiner la réponse
 def affiner_reponse(question, reponse):
     question_starter = {"Comment" : "Après analyse,", "Pourquoi" : "Car, ", "Peux-tu" : "Oui, bien-sûr! "}
     question = question.split()
